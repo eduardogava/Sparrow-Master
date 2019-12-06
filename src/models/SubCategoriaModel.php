@@ -2,13 +2,14 @@
 
 require_once realpath(dirname(__FILE__, 2) . '/config/config.php');
 
-class categoriaModel
+class subCategoriaModel
 {
     public static function listarTodos()
     {
 
         $conexao = Database::getConection();
-        $sql = "SELECT * FROM categorias";
+        $sql = "SELECT c.nome as categoria, s.nome as subcategorias FROM categorias as c JOIN subcategorias s ON c.id_categoria = s.id_subcategoria
+        ";
 
         $resultado = $conexao->query($sql) or die("Erro ao listar todas as categorias") . mysql_error();
 
@@ -24,13 +25,13 @@ class categoriaModel
         var_dump($dados);
         $conexao = Database::getConection();
 
-        $nome = $dados['txtNomeCategoria'];
-        $novo = $conexao->prepare("INSERT INTO categorias (nome) VALUES (?)");
+        $nome = $dados['txtNomeSubCategoria'];
+        $novo = $conexao->prepare("INSERT INTO subcategorias (nome) VALUES (?)");
         $novo->bind_param('s', $nome);
         $novo->execute();
         if ($novo->affected_rows > 0) {
             // $id = mysqli_stmt_insert_id($novo);
-            header("Location: categorias.php");
+            header("Location: subcategorias.php");
         } else {
             return "Erro ao gravar no banco de dados";
         }
@@ -39,17 +40,17 @@ class categoriaModel
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $categoria = new categoriaModel;
+    $subcategoria = new subCategoriaModel;
     var_dump($_POST);
 
     $acao = ($_POST['acao']);
 
     if ($acao == "insert") {
         print_r("Entrou insert");
-        $categoria->incluir($_POST);
+        $subcategoria->incluir($_POST);
 
     } elseif ($acao == "update") {
         //print_r("Entrou update");
-        $categoria->atualizar($_POST);
+        $subcategoria->atualizar($_POST);
     }
 }

@@ -1,3 +1,6 @@
+<?php
+require_once realpath(dirname(__FILE__) . '/src/models/SubCategoriaModel.php');
+?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -32,12 +35,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Subcategoria</h1>
+                            <h1 class="m-0 text-dark">Categorias de eventos</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Subcategoria</li>
+                                <li class="breadcrumb-item active">Categorias de eventos</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -53,7 +56,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="card">
                                 <div class="card-header">
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo">
-                                        <i class="fas fa-plus mr-1"></i>Nova categoria
+                                        <i class="fas fa-plus mr-1"></i>Nova Subcategoria
                                     </button>
 
                                     <!-- Modal -->
@@ -62,7 +65,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Nova categoria</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">Nova Subcategoria
+                                                    </h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Fechar">
                                                         <span aria-hidden="true">&times;</span>
@@ -74,7 +78,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label>Nome da categoria</label>
+                                                                    <label>Nome da Subcategoria</label>
                                                                     <input type="text" class="form-control"
                                                                         name="txtNomeCategoria" required>
                                                                 </div>
@@ -97,28 +101,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <!-- /.card-header -->
                                 <div class="card-body p-0">
 
-                                    <table class="table table-striped">
+                                    <table id="tabelaCategorias" class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th style="width: 10px">#</th>
-                                                <th>Descrição</th>
+                                                <th>Categoria</th>
+                                                <th>SubCategoria</th>
                                                 <th>Status</th>
-                                                <th style="width: 40px">Ações</th>
+                                                <th style="width: 90px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-require_once realpath(dirname(__FILE__) . '/src/models/CategoriaModel.php');
-
-$listaCategorias = CategoriaModel::listarTodos();
-foreach ($listaCategorias as $categoria) {
+$listaCategorias = subCategoriaModel::listarTodos();
+foreach ($listaCategorias as $subcategoria) {
     echo "<tr>
-                                                        <td>" . $categoria['id_categoria'] . "</td>
-                                                        <td>" . $categoria['nome'] . "</td>
-                                                        <td>" . $categoria['status'] . "</td>
-                                                        <td><button class='btn btn-primary' data-toggle='modal' data-target='#modalAlterar'>
-                                                            <i class='fas fa-plus mr-1'></i>Editar
+                                                        <td>" . $subcategoria['id_subcategoria'] . "</td>
+                                                        <td>" . $subcategoria['nome'] . "</td>
+                                                        <td>" . $subcategoria['nome2'] . "</td>
+                                                        <td>" . $subcategoria['status'] . "</td>
+                                                        <td><button class='btn btn-primary mr-1' data-tooltip='tooltip' data-toggle='modal' data-target='#modalAlterar' data-placement='top' title='Editar'>
+                                                            <i class='fas fa-edit '></i>
+                                                            </button> <button class='btn btn-warning' data-tooltip='tooltip' data-toggle='modal' data-target='#modalExcluir' data-placement='top' title='Deletar'>
+                                                            <i class='fas fa-trash-alt '></i>
                                                             </button></td>
+
                                                       </tr>";
 }
 ?>
@@ -127,19 +134,20 @@ foreach ($listaCategorias as $categoria) {
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Alterar categoria</h5>
+                                                            <h5 class="modal-title">Alterar Subcategoria</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Fechar">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
+
                                                         <form method="POST">
                                                             <div class="modal-body">
                                                                 <input type="hidden" name="acao" value="update">
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label>Nome da categoria</label>
+                                                                            <label>Nome da Subcategoria</label>
                                                                             <input type="text" class="form-control"
                                                                                 name="txtNomeCategoria" required>
                                                                         </div>
@@ -153,6 +161,33 @@ foreach ($listaCategorias as $categoria) {
                                                                 <button name="update" type="submit"
                                                                     class="btn btn-primary">Salvar
                                                                     mudanças</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Deseja excluir categoria?</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Fechar">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <form method="POST">
+                                                            <div class="modal-body">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Fechar</button>
+                                                                <button name="excluir" type="submit"
+                                                                    class="btn btn-primary">Excluir
+                                                                </button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -185,6 +220,18 @@ foreach ($listaCategorias as $categoria) {
     <!-- REQUIRED SCRIPTS -->
 
     <?php require_once "dist/js/javascript.php";?>
+
+    <script>
+    $(document).ready(function() {
+        $('#tabelaCategorias').DataTable();
+    });
+    </script>
+    <script>
+    $(function() {
+        $('[data-tooltip="tooltip"]').tooltip()
+    })
+    </script>
+
 </body>
 
 </html>
