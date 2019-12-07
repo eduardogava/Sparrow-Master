@@ -116,10 +116,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 $listaCategorias = subCategoriaModel::listarTodos();
 foreach ($listaCategorias as $subcategoria) {
     echo "<tr>
-                                                        <td>" . $subcategoria['id_subcategoria'] . "</td>
-                                                        <td>" . $subcategoria['nome'] . "</td>
-                                                        <td>" . $subcategoria['nome2'] . "</td>
-                                                        <td>" . $subcategoria['status'] . "</td>
+                                                        <td>" . $subcategoria['s.id_subcategoria'] . "</td>
+                                                        <td>" . $subcategoria['c.nome'] . "</td>
+                                                        <td>" . $subcategoria['s.nome'] . "</td>
+                                                        <td>" . $subcategoria['s.status'] . "</td>
                                                         <td><button class='btn btn-primary mr-1' data-tooltip='tooltip' data-toggle='modal' data-target='#modalAlterar' data-placement='top' title='Editar'>
                                                             <i class='fas fa-edit '></i>
                                                             </button> <button class='btn btn-warning' data-tooltip='tooltip' data-toggle='modal' data-target='#modalExcluir' data-placement='top' title='Deletar'>

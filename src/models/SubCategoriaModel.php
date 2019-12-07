@@ -26,8 +26,8 @@ class subCategoriaModel
         $conexao = Database::getConection();
 
         $nome = $dados['txtNomeSubCategoria'];
-        $novo = $conexao->prepare("INSERT INTO subcategorias (nome) VALUES (?)");
-        $novo->bind_param('s', $nome);
+        $novo = $conexao->prepare("INSERT INTO subcategorias (c.nome, s.nome) VALUES (?, ?)");
+        $novo->bind_param('s, s', $nome);
         $novo->execute();
         if ($novo->affected_rows > 0) {
             // $id = mysqli_stmt_insert_id($novo);
